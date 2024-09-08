@@ -5,7 +5,7 @@ sourcemod-nativevotes-updated (uncletopia)
 
 This fork includes a couple extra features that are not upstreamed:
 
-- Vote results are shown in the center of the screen.
+- Vote results are shown in the center of the screen. Set `nativevotes_progress_centered` to `1`.
 - The ability to have a "curated" map pool. This map pool will be used to pull random maps for voting from instead of the standard, potentially very large, map pool. 
 
 ### Curated Map Pool Setup
