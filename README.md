@@ -1,7 +1,25 @@
-sourcemod-nativevotes-updated
+sourcemod-nativevotes-updated (uncletopia)
 =====================
 
-### NativeVotes SourceMod plugin, with the following fixes:
+## Included Changes
+
+This fork includes a couple extra features that are not upstreamed:
+
+- Vote results are shown in the center of the screen.
+- The ability to have a "curated" map pool. This map pool will be used to pull random maps for voting from instead of the standard, potentially very large, map pool. 
+
+### Curated Map Pool Setup
+
+To configure this, set `sm_mapvote_curate` to `1` and create a entry called `mapcurated` in your `maplists.cfg` pointing to your alternate map list file, eg:
+
+```
+    "mapcurated"
+    {
+        "file"                  "addons/sourcemod/configs/curated_maplist.txt"
+    }
+```
+
+## NativeVotes SourceMod plugin, with the following fixes:
 
 @nosoop
 - [Prevent NativeVote menu callback from freeing in-use forward handle](https://github.com/powerlord/sourcemod-nativevotes/pull/3)
