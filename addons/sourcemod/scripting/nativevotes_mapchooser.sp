@@ -277,7 +277,8 @@ public void OnConfigsExecuted()
 	{
 		if (g_mapFileSerial == -1)
 		{
-			LogError("Unable to create a valid curated map list.");
+			LogError("Unable to create a valid curated map list. Feature disabled");
+			g_Cvar_CurateMaps.SetBool(false);
 		}
 	}
 
