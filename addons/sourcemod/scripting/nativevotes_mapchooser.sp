@@ -1314,7 +1314,7 @@ void CreateNextVote()
 
 	for (int i = 0; i < maps.Length; i++)
 	{
-		g_MapList.GetString(i, map, sizeof(map));
+		maps.GetString(i, map, sizeof(map));
 		if (FindMap(map, map, sizeof(map)) != FindMap_NotFound)
 		{
 			tempMaps.PushString(map);
