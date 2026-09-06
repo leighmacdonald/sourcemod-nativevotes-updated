@@ -11,7 +11,7 @@
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, version 3.0, as published by the
  * Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
@@ -44,7 +44,7 @@ void DisplayVoteBanMenu(int client, int target)
 	ShowActivity2(client, "[SM] ", "%t", "Initiated Vote Ban", g_voteInfo[VOTE_NAME]);
 
 	g_voteType = VoteType_Ban;
-	
+
 	if (g_NativeVotes)
 	{
 		NativeVote voteMenu = NativeVotes_Create(Handler_NativeVoteCallback, NativeVotesType_Custom_YesNo, MENU_ACTIONS_ALL);
@@ -60,24 +60,24 @@ void DisplayVoteBanMenu(int client, int target)
 		voteMenu.AddItem(VOTE_NO, "No");
 		voteMenu.ExitButton = false;
 		voteMenu.DisplayVoteToAll(20);
-	}	
+	}
 }
 
 void DisplayBanTargetMenu(int client)
 {
 	Menu menu = new Menu(MenuHandler_Ban);
-	
+
 	char title[100];
 	Format(title, sizeof(title), "%T:", "Ban vote", client);
 	menu.SetTitle(title);
 	menu.ExitBackButton = true;
-	
+
 	AddTargetsToMenu(menu, client, false, false);
-	
+
 	menu.Display(client, MENU_TIME_FOREVER);
 }
 
-public void AdminMenu_VoteBan(TopMenu topmenu, 
+public void AdminMenu_VoteBan(TopMenu topmenu,
 							  TopMenuAction action,
 							  TopMenuObject object_id,
 							  int param,
@@ -93,7 +93,7 @@ public void AdminMenu_VoteBan(TopMenu topmenu,
 		DisplayBanTargetMenu(param);
 	}
 	else if (action == TopMenuAction_DrawOption)
-	{	
+	{
 		/* disable this option if a vote is already running */
 		buffer[0] = !Internal_IsNewVoteAllowed() ? ITEMDRAW_IGNORE : ITEMDRAW_DEFAULT;
 	}
@@ -116,7 +116,7 @@ public int MenuHandler_Ban(Menu menu, MenuAction action, int param1, int param2)
 	{
 		char info[32], name[32];
 		int userid, target;
-		
+
 		menu.GetItem(param2, info, sizeof(info), _, name, sizeof(name));
 		userid = StringToInt(info);
 
@@ -143,25 +143,25 @@ public Action Command_Voteban(int client, int args)
 	if (args < 1)
 	{
 		ReplyToCommand(client, "[SM] Usage: sm_voteban <player> [reason]");
-		return Plugin_Handled;	
+		return Plugin_Handled;
 	}
-	
+
 	if (Internal_IsVoteInProgress())
 	{
 		ReplyToCommand(client, "[SM] %t", "Vote in Progress");
 		return Plugin_Handled;
-	}	
-	
+	}
+
 	if (!TestVoteDelay(client))
 	{
 		return Plugin_Handled;
 	}
-	
+
 	char text[256], arg[64];
 	GetCmdArgString(text, sizeof(text));
-	
+
 	int len = BreakString(text, arg, sizeof(arg));
-	
+
 	if (len != -1)
 	{
 		strcopy(g_voteArg, sizeof(g_voteArg), text[len]);
@@ -170,11 +170,11 @@ public Action Command_Voteban(int client, int args)
 	{
 		g_voteArg[0] = '\0';
 	}
-	
+
 	char target_name[MAX_TARGET_LENGTH];
 	int target_list[MAXPLAYERS], target_count;
 	bool tn_is_ml;
-	
+
 	if ((target_count = ProcessTargetString(
 			arg,
 			client,
@@ -190,6 +190,6 @@ public Action Command_Voteban(int client, int args)
 	}
 
 	DisplayVoteBanMenu(client, target_list[0]);
-	
+
 	return Plugin_Handled;
 }

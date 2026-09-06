@@ -11,7 +11,7 @@
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License, version 3.0, as published by the
  * Free Software Foundation.
- * 
+ *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
@@ -41,9 +41,9 @@ void DisplayVoteKickMenu(int client, int target)
 
 	LogAction(client, target, "\"%L\" initiated a kick vote against \"%L\"", client, target);
 	ShowActivity(client, "%t", "Initiated Vote Kick", g_voteInfo[VOTE_NAME]);
-	
+
 	g_voteType = VoteType_Kick;
-	
+
 	if (g_NativeVotes)
 	{
 		NativeVote voteMenu = NativeVotes_Create(Handler_NativeVoteCallback, NativeVotesType_Kick, MENU_ACTIONS_ALL);
@@ -65,18 +65,18 @@ void DisplayVoteKickMenu(int client, int target)
 void DisplayKickTargetMenu(int client)
 {
 	Menu menu = new Menu(MenuHandler_Kick);
-	
+
 	char title[100];
 	Format(title, sizeof(title), "%T:", "Kick vote", client);
 	menu.SetTitle(title);
 	menu.ExitBackButton = true;
-	
+
 	AddTargetsToMenu(menu, client, false, false);
-	
+
 	menu.Display(client, MENU_TIME_FOREVER);
 }
 
-public void AdminMenu_VoteKick(TopMenu topmenu, 
+public void AdminMenu_VoteKick(TopMenu topmenu,
 							  TopMenuAction action,
 							  TopMenuObject object_id,
 							  int param,
@@ -92,7 +92,7 @@ public void AdminMenu_VoteKick(TopMenu topmenu,
 		DisplayKickTargetMenu(param);
 	}
 	else if (action == TopMenuAction_DrawOption)
-	{	
+	{
 		/* disable this option if a vote is already running */
 		buffer[0] = !IsNewVoteAllowed() ? ITEMDRAW_IGNORE : ITEMDRAW_DEFAULT;
 	}
@@ -115,7 +115,7 @@ public int MenuHandler_Kick(Menu menu, MenuAction action, int param1, int param2
 	{
 		char info[32], name[32];
 		int userid, target;
-		
+
 		menu.GetItem(param2, info, sizeof(info), _, name, sizeof(name));
 		userid = StringToInt(info);
 
@@ -142,31 +142,31 @@ public Action Command_Votekick(int client, int args)
 	if (args < 1)
 	{
 		ReplyToCommand(client, "[SM] Usage: sm_votekick <player> [reason]");
-		return Plugin_Handled;	
+		return Plugin_Handled;
 	}
-	
+
 	if (Internal_IsVoteInProgress())
 	{
 		ReplyToCommand(client, "[SM] %t", "Vote in Progress");
 		return Plugin_Handled;
-	}	
-	
+	}
+
 	if (!TestVoteDelay(client))
 	{
 		return Plugin_Handled;
 	}
-	
+
 	char text[256], arg[64];
 	GetCmdArgString(text, sizeof(text));
-	
+
 	int len = BreakString(text, arg, sizeof(arg));
-	
+
 	int target = FindTarget(client, arg);
 	if (target == -1)
 	{
 		return Plugin_Handled;
 	}
-	
+
 	if (len != -1)
 	{
 		strcopy(g_voteArg, sizeof(g_voteArg), text[len]);
@@ -175,8 +175,8 @@ public Action Command_Votekick(int client, int args)
 	{
 		g_voteArg[0] = '\0';
 	}
-	
+
 	DisplayVoteKickMenu(client, target);
-	
+
 	return Plugin_Handled;
 }
